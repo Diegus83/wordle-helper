@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 
 import os
+import pprint
 import time
 
-def timer():
+
+def waitAnimation():
 	chars = ["––", "\\", "|", "/"]
 	for i in range(4):
 		for c in chars:
 			os.system("clear")
 			print(f'Filtering out words, please wait...{c}')
 			time.sleep(0.1)
+
 
 def loadWordList() -> list:
 	"Loads the list of all five letter words"
@@ -25,7 +28,7 @@ def graySquares():
 	global word_list
 	good_ones = list()
 
-	letters = input("Enter the gray square letters, press Enter when done: ")
+	letters = input("Enter gray square letters, press Enter when done: ")
 
 	for letter in letters:
 		for index, word in enumerate(word_list):
@@ -38,12 +41,29 @@ def graySquares():
 
 	word_list = good_ones
 
-	timer()
+	waitAnimation()
 
 	return None
 
-def yellowSquares(letter: str, position: int):
+def yellowSquares():
 	"Filter words missing a known letter (yellow squares)"
+	global word_list
+	good_ones = list()
+
+	letters = input("Enter yellow square letters, press Enter when done: ")
+
+	for letter in letters:
+		for index, word in enumerate(word_list):
+			if word and letter not in word:
+				word_list[index] = False
+
+	for word in word_list:
+		if word:
+			good_ones.append(word)
+
+	word_list = good_ones
+
+	waitAnimation()
 	return None
 
 def greenSquares(letters: list):
@@ -53,8 +73,7 @@ def greenSquares(letters: list):
 def printWords(flag):
 	if not flag:
 		global word_list
-		for word in word_list:
-			print(word, end='\t')
+		pprint.pprint(word_list, compact = True)
 		print('')
 	else:
 		print(f'The current list contains {len(word_list)} words')
@@ -106,7 +125,7 @@ if __name__ == "__main__":
 		elif option == 5:
 			quitConfirmation()
 		elif option == 6:
-			loadWordList()
+			word_list = loadWordList()
 
 		else:
 			print(f'Invalid option, please choose a number between {menuKeys[0]} and {menuKeys[-1]}')
