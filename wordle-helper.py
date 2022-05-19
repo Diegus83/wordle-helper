@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import os
+
 def loadWordList() -> list:
 	"Loads the list of all five letter words"
 	words = list()
@@ -9,8 +11,23 @@ def loadWordList() -> list:
 	return words
 
 
-def graySquares(letters: list):
+def graySquares():
 	"Filter words using a bad letter (gray squares)"
+	global word_list
+	good_ones = list()
+
+	letters = input("Enter the gray square letters, press Enter when done: ")
+
+	for letter in letters:
+		for index, word in enumerate(word_list):
+			if word and letter in word:
+				word_list[index] = False
+
+	for word in word_list:
+		if word:
+			good_ones.append(word)
+
+	word_list = good_ones
 	return None
 
 def yellowSquares(letter: str, position: int):
@@ -55,6 +72,7 @@ menuKeys = [x for x in menuOptions.keys()]
 
 if __name__ == "__main__":
 	while True:
+		os.system("clear")
 		printWords(True)
 		printMenu()
 		
