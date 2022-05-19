@@ -158,6 +158,8 @@ if __name__ == "__main__":
 			resetConfirmation()
 		elif option == 6:
 			quitConfirmation()
+		elif option == 66:
+			exit()
 
 		else:
 			print(f'Invalid option, please choose a number between {menuKeys[0]} and {menuKeys[-1]}')
