@@ -4,6 +4,22 @@ import os
 import pprint
 import time
 
+def printWords(flag):
+	if not flag:
+		global word_list
+		pprint.pprint(word_list, compact = True)
+		print('')
+	else:
+		print(f'The current list contains {len(word_list)} words')
+
+def printMenu():
+	global menuOptions
+	for key in menuOptions.keys():
+		print(f'{key} - {menuOptions[key]}')
+
+def quitConfirmation():
+	print("Ok byeee!")
+	exit()
 
 def waitAnimation():
 	chars = ["––", "\\", "|", "/"]
@@ -13,7 +29,6 @@ def waitAnimation():
 			print(f'Filtering out words, please wait...{c}')
 			time.sleep(0.1)
 
-
 def loadWordList() -> list:
 	"Loads the list of all five letter words"
 	words = list()
@@ -21,7 +36,6 @@ def loadWordList() -> list:
 		for word in fin:
 			words.append(word[0:5])
 	return words
-
 
 def graySquares():
 	"Filter words using a bad letter (gray squares)"
@@ -66,29 +80,30 @@ def yellowSquares():
 	waitAnimation()
 	return None
 
-def greenSquares(letters: list):
+def greenSquares():
 	"Filter words missing a known letter and position (green squares)"
+	global word_list
+	known_letters = {1:'', 2:'', 3:'', 4:'', 5:''}
+	good_ones = list()
+	
+	print("Enter a letter for positions 1-5 or press Enter to skip")
+	for key in known_letters.keys():
+		known_letters[key] = input(f'Position {key}: ')
+	
+	for key, letter in known_letters.items():
+		if letter:
+			for index, word in enumerate(word_list):
+				if word and word[key-1] != letter:
+					word_list[index] = False
+
+	for word in word_list:
+		if word:
+			good_ones.append(word)
+
+	word_list = good_ones
+
+	waitAnimation()
 	return None
-
-def printWords(flag):
-	if not flag:
-		global word_list
-		pprint.pprint(word_list, compact = True)
-		print('')
-	else:
-		print(f'The current list contains {len(word_list)} words')
-
-def printMenu():
-	global menuOptions
-	for key in menuOptions.keys():
-		print(f'{key} - {menuOptions[key]}')
-
-def quitConfirmation():
-	print("Ok byeee!")
-	exit()
-
-
-word_list = loadWordList()
 
 menuOptions = {
 	1: "Print current list of words",
@@ -104,6 +119,8 @@ menuKeys = [x for x in menuOptions.keys()]
 if __name__ == "__main__":
 	
 	os.system("clear")
+
+	word_list = loadWordList()
 
 	while True:
 		printWords(True)
