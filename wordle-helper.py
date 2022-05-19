@@ -25,6 +25,16 @@ def quitConfirmation():
 		exit()
 	else:
 		print("Keeping current list")
+
+def getLetters(color):
+	"Ask the user for five letters and saves them in order"
+
+	letters = {1:'', 2:'', 3:'', 4:'', 5:''}
+	print(f'Enter the letters for the {color} squares 1-5 or press Enter to skip')
+	for key in letters.keys():
+		letters[key] = input(f'Position {key}: ')
+
+	return letters
 	
 def resetConfirmation():
 	global word_list
@@ -71,20 +81,29 @@ def graySquares():
 	word_list = good_ones
 
 	waitAnimation()
-
 	return None
 
 def yellowSquares():
 	"Filter words missing a known letter (yellow squares)"
+	# this function needs to do double filtering:
+	# eg. a yellow S on the first square means:
+	# remove all the words that don't have an S
+	# but also remove all the words that have an S in the first square
+
 	global word_list
 	good_ones = list()
-
-	letters = input("Enter yellow square letters, press Enter when done: ")
-
-	for letter in letters:
-		for index, word in enumerate(word_list):
-			if word and letter not in word:
-				word_list[index] = False
+	letters = getLetters('yellow')
+	
+	for key, letter in letters.items():
+		if letter:
+			for index, word in enumerate(word_list):
+				# if word[key] is the yellow letter I can discard that word
+				if word and word[key-1] == letter:
+					word_list[index] = False
+				# if word doesn't contain the yellow letter in another position
+				# I can discard that word too
+				elif word and letter not in word:
+					word_list[index] = False
 
 	for word in word_list:
 		if word:
@@ -98,14 +117,10 @@ def yellowSquares():
 def greenSquares():
 	"Filter words missing a known letter and position (green squares)"
 	global word_list
-	known_letters = {1:'', 2:'', 3:'', 4:'', 5:''}
 	good_ones = list()
+	letters = getLetters('green')
 	
-	print("Enter a letter for positions 1-5 or press Enter to skip")
-	for key in known_letters.keys():
-		known_letters[key] = input(f'Position {key}: ')
-	
-	for key, letter in known_letters.items():
+	for key, letter in letters.items():
 		if letter:
 			for index, word in enumerate(word_list):
 				if word and word[key-1] != letter:
