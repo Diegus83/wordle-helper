@@ -18,8 +18,23 @@ def printMenu():
 		print(f'{key} - {menuOptions[key]}')
 
 def quitConfirmation():
-	print("Ok byeee!")
-	exit()
+	a = input("You want to exit? y/n: ")
+
+	if a == 'y':
+		print("Ok byeee!")
+		exit()
+	else:
+		print("Keeping current list")
+	
+def resetConfirmation():
+	global word_list
+
+	a = input("You want to reload the full list of words? y/n: ")
+
+	if a == 'y':
+		word_list = loadWordList()
+	else:
+		print("Keeping current list")
 
 def waitAnimation():
 	chars = ["––", "\\", "|", "/"]
@@ -110,8 +125,8 @@ menuOptions = {
 	2: "Filter words using a bad letter (gray squares)",
 	3: "Filter words missing a known letter (yellow squares)",
 	4: "Filter words missing a known letter and position (green squares)",
-	5: "Quit",
-	6: "Start over"
+	5: "Start over",
+	6: "Quit"
 }
 
 menuKeys = [x for x in menuOptions.keys()]
@@ -140,9 +155,9 @@ if __name__ == "__main__":
 		elif option == 4:
 			greenSquares()
 		elif option == 5:
-			quitConfirmation()
+			resetConfirmation()
 		elif option == 6:
-			word_list = loadWordList()
+			quitConfirmation()
 
 		else:
 			print(f'Invalid option, please choose a number between {menuKeys[0]} and {menuKeys[-1]}')
