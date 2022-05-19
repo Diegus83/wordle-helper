@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
 
 import os
+import time
+
+def timer():
+	chars = ["––", "\\", "|", "/"]
+	for i in range(4):
+		for c in chars:
+			os.system("clear")
+			print(f'Filtering out words, please wait...{c}')
+			time.sleep(0.1)
 
 def loadWordList() -> list:
 	"Loads the list of all five letter words"
@@ -28,6 +37,9 @@ def graySquares():
 			good_ones.append(word)
 
 	word_list = good_ones
+
+	timer()
+
 	return None
 
 def yellowSquares(letter: str, position: int):
@@ -71,8 +83,10 @@ menuOptions = {
 menuKeys = [x for x in menuOptions.keys()]
 
 if __name__ == "__main__":
+	
+	os.system("clear")
+
 	while True:
-		os.system("clear")
 		printWords(True)
 		printMenu()
 		
