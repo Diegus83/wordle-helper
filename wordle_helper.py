@@ -30,7 +30,14 @@ def getLetters(color):
 	"Ask the user for five letters and saves them in order"
 
 	letters = {1:'', 2:'', 3:'', 4:'', 5:''}
-	print(f'Enter the letters for the {color} squares 1-5 or press Enter to skip')
+	
+	# print(f'''
+	# 	{letters[1]}\t{letters[2]}\t{letters[3]}\t{letters[4]}\t{letters[5]}
+	# 	-\t-\t-\t-\t-
+	# 	1\t2\t3\t4\t5
+	# 	''')
+
+	print(f'Enter the letters for the {color} squares 1-5, press Enter to skip')
 	for key in letters.keys():
 		letters[key] = input(f'Position {key}: ')
 
@@ -66,13 +73,13 @@ def graySquares():
 	"Filter words using a bad letter (gray squares)"
 	global word_list
 	good_ones = list()
-
 	letters = getLetters('gray')
 
-	for letter in letters:
-		for index, word in enumerate(word_list):
-			if word and letter in word:
-				word_list[index] = False
+	for key, letter in letters.items():
+		if letter:
+			for index, word in enumerate(word_list):
+				if word and letter in word:
+					word_list[index] = False
 
 	for word in word_list:
 		if word:
